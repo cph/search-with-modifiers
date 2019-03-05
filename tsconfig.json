@@ -26,6 +26,9 @@
       "search-with-modifiers/*": [
         "app/*"
       ],
+      "fetch": [
+        "node_modules/ember-fetch"
+      ],
       "*": [
         "types/*"
       ]
