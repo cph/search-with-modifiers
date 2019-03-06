@@ -3425,6 +3425,10 @@ ember-cli-preprocess-registry@^3.1.2:
     debug "^3.0.1"
     process-relative-require "^1.0.0"
 
+ember-cli-rails-addon@kobsy/ember-cli-rails-addon#optional-csrf:
+  version "0.10.0"
+  resolved "https://codeload.github.com/kobsy/ember-cli-rails-addon/tar.gz/7907e8a9ec68877157511938a9968d315d5b4f51"
+
 ember-cli-sri@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ember-cli-sri/-/ember-cli-sri-2.1.1.tgz#971620934a4b9183cf7923cc03e178b83aa907fd"
@@ -3662,6 +3666,28 @@ ember-export-application-global@^2.0.0:
   integrity sha1-jW12GayKGj+MQwA1Sesh6+1oW9I=
   dependencies:
     ember-cli-babel "^6.0.0-beta.7"
+
+ember-factory-for-polyfill@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/ember-factory-for-polyfill/-/ember-factory-for-polyfill-1.3.1.tgz#b446ed64916d293c847a4955240eb2c993b86eae"
+  integrity sha512-y3iG2iCzH96lZMTWQw6LWNLAfOmDC4pXKbZP6FxG8lt7GGaNFkZjwsf+Z5GAe7kxfD7UG4lVkF7x37K82rySGA==
+  dependencies:
+    ember-cli-version-checker "^2.1.0"
+
+ember-getowner-polyfill@^2.0.1:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-2.2.0.tgz#38e7dccbcac69d5ec694000329ec0b2be651d2b2"
+  integrity sha512-rwGMJgbGzxIAiWYjdpAh04Abvt0s3HuS/VjHzUFhVyVg2pzAuz45B9AzOxYXzkp88vFC7FPaiA4kE8NxNk4A4Q==
+  dependencies:
+    ember-cli-version-checker "^2.1.0"
+    ember-factory-for-polyfill "^1.3.1"
+
+ember-islands@kobsy/ember-islands#remove-jquery-dependence:
+  version "1.4.0"
+  resolved "https://codeload.github.com/kobsy/ember-islands/tar.gz/101752a3b7353e7d2ea555feb824e6578f91fe49"
+  dependencies:
+    ember-cli-babel "^6.8.2"
+    ember-getowner-polyfill "^2.0.1"
 
 ember-load-initializers@^1.1.0:
   version "1.1.0"
