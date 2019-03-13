@@ -1,0 +1,24 @@
+<SearchBox
+  @tokenConfig={{this.tokenConfig}}
+  @value={{this._query}}
+  @focused={{this.inputFocused}}
+  @onValueChanged={{action this.valueDidChange}}
+  @onActiveTokenChanged={{action this.updateActiveToken}}
+  @onSearchTriggered={{action this.performSearch}}
+  @onDownPressed={{action this.focusOnHints}}
+  @onEscPressed={{action this.hideSearchHelps}}
+  @onClear={{action this.performSearch}}
+  @onFocus={{action this.onInputFocus}}
+  @onBlur={{action this.onInputBlur}} />
+{{#if this.showModifierList}}
+  <SearchModifiers
+    @hintList={{this.hintList}}
+    @focused={{this.hintsFocused}}
+    @focusOnInput={{action this.focusOnInput}}
+    @onSelect={{action this.didSelectModifier}}
+    onfocusin={{action this.onHintsFocus}}
+    onfocusout={{action this.onHintsBlur}} />
+{{/if}}
+{{#if this.button}}
+  <button class={{buttonClasses}} {{action this.performSearch}}>{{this.button}}</button>
+{{/if}}
