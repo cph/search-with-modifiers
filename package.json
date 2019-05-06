@@ -61,5 +61,8 @@
   },
   "engines": {
     "node": "8.* || >= 10.*"
+  },
+  "resolutions": {
+    "jquery": "^3.4.1"
   }
 }
