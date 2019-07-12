@@ -63,6 +63,9 @@
     "node": "8.* || >= 10.*"
   },
   "resolutions": {
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.13",
+    "lodash.template": "^4.5.0",
+    "clean-css": "^4.1.11"
   }
 }
