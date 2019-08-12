@@ -147,7 +147,7 @@ export default class SearchWithModifiers extends Component {
     const rootEl = this.element as HTMLElement;
     if (!rootEl) { return; }
     if (rootEl === target || rootEl.contains(target)) { return; }
-    e.preventDefault();
+    if (this.showModifierList) { e.preventDefault(); }
     this.hideSearchHelps();
   }
 
