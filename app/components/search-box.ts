@@ -19,6 +19,11 @@ function generateSpaceToken(): Token {
   return new Token('', ' ', null);
 }
 
+// Browsers can optimize certain event handling if it's passive, but IE
+// doesn't allow passing in an options object. So we use some trickery
+// to detect if the addEventListener we have access to supports an
+// options hash.
+// cf. https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
 let passiveEventSupport = false;
 try {
   let options = { get passive() { return passiveEventSupport = true; } };
