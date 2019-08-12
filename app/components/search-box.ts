@@ -126,7 +126,7 @@ export default class SearchBox extends Component {
   @computed('activeTokenIndex', 'tokens.[]')
   get isLastTokenSelected(): boolean {
     let tokensCount = this.tokens.length;
-    return tokensCount > 0 && (tokensCount - 1) === this.activeTokenIndex;
+    return (tokensCount - 1) === this.activeTokenIndex;
   }
 
   @computed('_value')
