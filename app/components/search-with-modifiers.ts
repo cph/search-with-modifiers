@@ -35,6 +35,7 @@ export default class SearchWithModifiers extends Component {
 
   @computed('cachedQuery', 'query')
   get _query(): string {
+    this.resetForceHelps();
     return this.cachedQuery !== null ? this.cachedQuery : this.query || '';
   }
 
@@ -132,6 +133,24 @@ export default class SearchWithModifiers extends Component {
     }
   }
 
+  didInsertElement() {
+    window.addEventListener('click', this.clickAwayHandler);
+  }
+
+  willDestroyElement() {
+    window.removeEventListener('click', this.clickAwayHandler);
+  }
+
+  @action
+  clickAwayHandler(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    const rootEl = this.element as HTMLElement;
+    if (!rootEl) { return; }
+    if (rootEl === target || rootEl.contains(target)) { return; }
+    e.preventDefault();
+    this.hideSearchHelps();
+  }
+
   @action
   didSelectModifier(model: Modifier) {
     const token = this.activeToken;
@@ -182,6 +201,7 @@ export default class SearchWithModifiers extends Component {
 
   @action
   onInputFocus() {
+    if (!this.hintsFocused) { this.set('forceHidingSearchHelps', false); }
     this.focusOnInput();
   }
 
@@ -220,5 +240,12 @@ export default class SearchWithModifiers extends Component {
     if(this.isQueryBlank && !this.forceHidingSearchHelps) {
       this.showSearchHelps();
     }
+  }
+
+  resetForceHelps() {
+    this.setProperties({
+      forceHidingSearchHelps: false,
+      forceShowingSearchHelps: false
+    });
   }
 }
