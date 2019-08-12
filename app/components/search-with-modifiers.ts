@@ -1,8 +1,7 @@
 import Component from '@ember/component';
-import { set } from '@ember/object';
+import { set, action, computed } from '@ember/object';
 import { next } from '@ember/runloop';
 import { classNames } from '@ember-decorators/component';
-import { action, computed } from '@ember-decorators/object';
 import fetch from 'fetch';
 import { prepareConfig } from 'search-with-modifiers/utils/search';
 import SearchContext from 'search-with-modifiers/models/search-context';

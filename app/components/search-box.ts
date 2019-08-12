@@ -1,7 +1,8 @@
 import Component from '@ember/component';
 import { next } from '@ember/runloop';
+import { action, computed } from '@ember/object';
 import { classNames } from '@ember-decorators/component';
-import { action, computed, observes } from '@ember-decorators/object';
+import { observes } from '@ember-decorators/object';
 import Token, { tokenize } from 'search-with-modifiers/models/token';
 import KEY from 'search-with-modifiers/utils/keycodes';
 import { setCursor } from 'search-with-modifiers/utils/search';

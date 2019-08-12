@@ -1,5 +1,4 @@
-import { set } from '@ember/object';
-import { computed } from '@ember-decorators/object';
+import { computed, set } from '@ember/object';
 import Eventable from './eventable';
 import ListSource from './list-source';
 import { normalized, unquoted } from 'search-with-modifiers/utils/search';

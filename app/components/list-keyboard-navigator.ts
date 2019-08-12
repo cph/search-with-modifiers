@@ -1,7 +1,8 @@
 import Component from '@ember/component';
 import { next } from '@ember/runloop';
+import { action, computed } from '@ember/object';
 import { attribute, classNames } from '@ember-decorators/component';
-import { action, computed, observes } from '@ember-decorators/object';
+import { observes } from '@ember-decorators/object';
 import KEY from 'search-with-modifiers/utils/keycodes';
 import { scrollIntoView, scrollToBottom, scrollToTop } from 'search-with-modifiers/utils/scroll-helpers';
 
