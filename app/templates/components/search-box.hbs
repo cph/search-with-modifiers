@@ -1,20 +1,20 @@
 {{! template-lint-disable no-triple-curlies }}
-{{textarea
-    rows=1
-    autocomplete="off"
-    spellcheck=false
-    class="search-box-input"
-    placeholder=placeholder
-    value=_value
-    maxlength=maxLength
-    click=(action this.didClick)
-    paste=(action this.didPaste)
-    cut=(action this.didCut)
-    focus-in=(action this.didReceiveFocus)
-    focus-out=(action this.didLoseFocus)
-    key-down=(action this.onKeyDown)
-    key-up=(action this.onKeyUp)
-    disabled=disabled}}
+<Textarea
+    @class="search-box-input"
+    @rows={{1}}
+    @autocomplete="off"
+    @spellcheck={{false}}
+    @placeholder={{placeholder}}
+    @value={{_value}}
+    @maxlength={{maxLength}}
+    @click={{fn this.didClick}}
+    @paste={{fn this.didPaste}}
+    @cut={{fn this.didCut}}
+    @focus-in={{fn this.didReceiveFocus}}
+    @focus-out={{fn this.didLoseFocus}}
+    @key-up={{fn this.onKeyUp}}
+    @keyDown={{fn this.onKeyDown}}
+    @disabled={{disabled}} />
 
 <div class="search-box-hints">{{{backgroundText}}}</div>
 

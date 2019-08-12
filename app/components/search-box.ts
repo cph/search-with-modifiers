@@ -188,7 +188,7 @@ export default class SearchBox extends Component {
   }
 
   @action
-  onKeyDown(_input: string, e: KeyboardEvent) {
+  onKeyDown(e: KeyboardEvent) {
     const keyCode = e.keyCode;
 
     if (keyCode === KEY.ENTER) {
