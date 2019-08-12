@@ -182,7 +182,7 @@ export default class SearchWithModifiers extends Component {
 
   @action
   onInputFocus() {
-    this.set('inputFocused', true);
+    this.focusOnInput();
   }
 
   @action
@@ -192,7 +192,7 @@ export default class SearchWithModifiers extends Component {
 
   @action
   onHintsFocus() {
-    this.set('hintsFocused', true);
+    this.focusOnHints();
   }
 
   @action
