@@ -7,6 +7,7 @@ interface DisplayHint {
   category: string;
   index: number;
   label: string;
+  modifier: boolean;
   position: number;
   value: string;
 }
@@ -56,6 +57,7 @@ export default class SearchModifiers extends Component {
             category: section.section,
             index,
             label: listItem.label || '',
+            modifier: listItem.modifier || false,
             position: index,
             value: listItem.value
           };
