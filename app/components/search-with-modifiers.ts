@@ -24,7 +24,7 @@ export default class SearchWithModifiers extends Component {
   _lastQuery: string = '';
   configHash: any = null;
   limit: number = 32;
-  inputFocused: boolean = true;
+  inputFocused: boolean = false;
   hintsFocused: boolean = false;
   forceHidingSearchHelps: boolean = false;
   forceShowingSearchHelps: boolean = false;
