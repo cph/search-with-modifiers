@@ -41,7 +41,7 @@ export default class Token extends Eventable {
   }
 
   set fullText(value) {
-    const configs = this.config;
+    const configs = this.configMap;
     if (configs) {
       let modifier: string = '';
       if (value.substr(0, 1) === '+') {
