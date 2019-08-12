@@ -19,6 +19,15 @@ function generateSpaceToken(): Token {
   return new Token('', ' ', null);
 }
 
+let passiveEventSupport = false;
+try {
+  let options = { get passive() { return passiveEventSupport = true; } };
+  window.addEventListener('test', options as any, options);
+  window.removeEventListener('test', options as any, options as any);
+} catch(err) {
+  passiveEventSupport = false;
+}
+
 @classNames('search-box')
 export default class SearchBox extends Component {
   cursorLocation: number = -1;
@@ -156,7 +165,7 @@ export default class SearchBox extends Component {
     this.background = searchBox.querySelector('.search-box-hints');
     if (this.mainInput) {
       let mainInput = this.mainInput;
-      mainInput.addEventListener('mousewheel', this.onMouseScroll);
+      mainInput.addEventListener('mousewheel', this.onMouseScroll, passiveEventSupport ? { passive: true } : false);
       mainInput.addEventListener('DOMMouseScroll', this.onMouseScroll);
       if (this.focused) {
         next(this, () => {
