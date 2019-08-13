@@ -60,5 +60,9 @@
   },
   "engines": {
     "node": "8.* || >= 10.*"
+  },
+  "resolutions": {
+    "clean-css": "^4.1.11",
+    "lodash.template": "^4.5.0"
   }
 }
