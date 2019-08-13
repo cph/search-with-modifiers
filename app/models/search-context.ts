@@ -1,5 +1,4 @@
-import { set } from '@ember/object';
-import { computed } from '@ember-decorators/object';
+import { computed, set } from '@ember/object';
 
 interface RawModifier {
   hint: string;

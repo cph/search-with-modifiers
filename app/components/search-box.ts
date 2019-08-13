@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { next } from '@ember/runloop';
+import { action, computed } from '@ember/object';
 import { classNames } from '@ember-decorators/component';
-import { action, computed, observes } from '@ember-decorators/object';
 import Token, { tokenize } from 'search-with-modifiers/models/token';
 import KEY from 'search-with-modifiers/utils/keycodes';
 import { setCursor } from 'search-with-modifiers/utils/search';
@@ -19,13 +19,25 @@ function generateSpaceToken(): Token {
   return new Token('', ' ', null);
 }
 
+// Browsers can optimize certain event handling if it's passive, but IE
+// doesn't allow passing in an options object. So we use some trickery
+// to detect if the addEventListener we have access to supports an
+// options hash.
+// cf. https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#Safely_detecting_option_support
+let passiveEventSupport = false;
+try {
+  let options = { get passive() { return passiveEventSupport = true; } };
+  window.addEventListener('test', options as any, options);
+  window.removeEventListener('test', options as any, options as any);
+} catch(err) {
+  passiveEventSupport = false;
+}
+
 @classNames('search-box')
 export default class SearchBox extends Component {
   cursorLocation: number = -1;
   maxLength: number = 250;
-  value: string = '';
   tokenConfig: ConfigMap = {};
-  focused: boolean = false;
 
   onActiveTokenChanged: ActionParam | null = null;
   onSearchTriggered: ActionParam | null = null;
@@ -36,8 +48,35 @@ export default class SearchBox extends Component {
   onFocus: ActionParam | null = null;
   onBlur: ActionParam | null = null;
 
-  _value: string = '';
   lastActiveToken: Token | null = null;
+
+  __value: string = '';
+  __internalValue: string = '';
+  __focused: boolean = false;
+
+  get value(): string { return this.__value; }
+  set value(newValue: string) {
+    this.__value = newValue;
+    if (this._value === newValue) { return; }
+    this.set('_value', this.value);
+
+  }
+
+  get _value(): string { return this.__internalValue; }
+  set _value(newValue: string) {
+    this.__internalValue = newValue;
+    if (this.onValueChanged) { this.onValueChanged(newValue); }
+    next(this, () => {
+      this.set('cursorLocation', this.mainInput ? this.mainInput.selectionStart : 0);
+      this.scrollBackgroundToMatchInput();
+    });
+  }
+
+  get focused(): boolean { return this.__focused; }
+  set focused(newValue: boolean) {
+    this.__focused = newValue;
+    if (this.focused && this.mainInput) { this.mainInput.focus(); }
+  }
 
   @computed('_value', 'tokenConfig')
   get tokens(): Token[] {
@@ -92,7 +131,7 @@ export default class SearchBox extends Component {
   @computed('activeTokenIndex', 'tokens.[]')
   get isLastTokenSelected(): boolean {
     let tokensCount = this.tokens.length;
-    return tokensCount > 0 && (tokensCount - 1) === this.activeTokenIndex;
+    return (tokensCount - 1) === this.activeTokenIndex;
   }
 
   @computed('_value')
@@ -122,7 +161,7 @@ export default class SearchBox extends Component {
 
   init() {
     super.init();
-    this.updateInternalValue();
+    this.__internalValue = this.value;
   }
 
   didInsertElement() {
@@ -131,7 +170,7 @@ export default class SearchBox extends Component {
     this.background = searchBox.querySelector('.search-box-hints');
     if (this.mainInput) {
       let mainInput = this.mainInput;
-      mainInput.addEventListener('mousewheel', this.onMouseScroll);
+      mainInput.addEventListener('mousewheel', this.onMouseScroll, passiveEventSupport ? { passive: true } : false);
       mainInput.addEventListener('DOMMouseScroll', this.onMouseScroll);
       if (this.focused) {
         next(this, () => {
@@ -154,7 +193,7 @@ export default class SearchBox extends Component {
   }
 
   @action
-  onKeyDown(_input: string, e: KeyboardEvent) {
+  onKeyDown(e: KeyboardEvent) {
     const keyCode = e.keyCode;
 
     if (keyCode === KEY.ENTER) {
@@ -269,26 +308,6 @@ export default class SearchBox extends Component {
     if (this.background && this.mainInput) {
       this.background.scrollLeft = this.mainInput.scrollLeft;
     }
-  }
-
-  @observes('value')
-  updateInternalValue() {
-    if (this._value === this.value) { return; }
-    this.set('_value', this.value);
-  }
-
-  @observes('_value')
-  notifyValueChange() {
-    if (this.onValueChanged) { this.onValueChanged(this._value); }
-    next(this, () => {
-      this.set('cursorLocation', this.mainInput ? this.mainInput.selectionStart : 0);
-      this.scrollBackgroundToMatchInput();
-    });
-  }
-
-  @observes('focused')
-  acquireFocus() {
-    if (this.focused && this.mainInput) { this.mainInput.focus(); }
   }
 
   @action

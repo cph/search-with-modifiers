@@ -1,8 +1,7 @@
 import Component from '@ember/component';
-import { set } from '@ember/object';
+import { set, action, computed } from '@ember/object';
 import { next } from '@ember/runloop';
 import { classNames } from '@ember-decorators/component';
-import { action, computed } from '@ember-decorators/object';
 import fetch from 'fetch';
 import { prepareConfig } from 'search-with-modifiers/utils/search';
 import SearchContext from 'search-with-modifiers/models/search-context';
@@ -25,7 +24,7 @@ export default class SearchWithModifiers extends Component {
   _lastQuery: string = '';
   configHash: any = null;
   limit: number = 32;
-  inputFocused: boolean = true;
+  inputFocused: boolean = false;
   hintsFocused: boolean = false;
   forceHidingSearchHelps: boolean = false;
   forceShowingSearchHelps: boolean = false;
@@ -36,6 +35,7 @@ export default class SearchWithModifiers extends Component {
 
   @computed('cachedQuery', 'query')
   get _query(): string {
+    this.resetForceHelps();
     return this.cachedQuery !== null ? this.cachedQuery : this.query || '';
   }
 
@@ -133,6 +133,24 @@ export default class SearchWithModifiers extends Component {
     }
   }
 
+  didInsertElement() {
+    window.addEventListener('click', this.clickAwayHandler);
+  }
+
+  willDestroyElement() {
+    window.removeEventListener('click', this.clickAwayHandler);
+  }
+
+  @action
+  clickAwayHandler(e: MouseEvent) {
+    const target = e.target as HTMLElement;
+    const rootEl = this.element as HTMLElement;
+    if (!rootEl) { return; }
+    if (rootEl === target || rootEl.contains(target)) { return; }
+    if (this.showModifierList) { e.preventDefault(); }
+    this.hideSearchHelps();
+  }
+
   @action
   didSelectModifier(model: Modifier) {
     const token = this.activeToken;
@@ -183,7 +201,8 @@ export default class SearchWithModifiers extends Component {
 
   @action
   onInputFocus() {
-    this.set('inputFocused', true);
+    if (!this.hintsFocused) { this.set('forceHidingSearchHelps', false); }
+    this.focusOnInput();
   }
 
   @action
@@ -193,7 +212,7 @@ export default class SearchWithModifiers extends Component {
 
   @action
   onHintsFocus() {
-    this.set('hintsFocused', true);
+    this.focusOnHints();
   }
 
   @action
@@ -221,5 +240,12 @@ export default class SearchWithModifiers extends Component {
     if(this.isQueryBlank && !this.forceHidingSearchHelps) {
       this.showSearchHelps();
     }
+  }
+
+  resetForceHelps() {
+    this.setProperties({
+      forceHidingSearchHelps: false,
+      forceShowingSearchHelps: false
+    });
   }
 }

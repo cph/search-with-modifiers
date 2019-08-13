@@ -45,7 +45,7 @@ module('Integration | Component | search-box', function(hooks) {
     let checkOk = false;
     this.set('tokenConfig', TOKEN_CONFIG);
     this.set('actionValue', function(value: string) {
-      if(checkOk) { assert.equal(value, 'published: '); }
+      if(checkOk) { assert.equal(value, 'published:'); }
     });
 
     await render(COMPLEX_TEMPLATE);

@@ -1,5 +1,4 @@
-import { set } from '@ember/object';
-import { computed } from '@ember-decorators/object';
+import { computed, set } from '@ember/object';
 import Eventable from './eventable';
 import ListSource from './list-source';
 import { normalized, unquoted } from 'search-with-modifiers/utils/search';
@@ -42,7 +41,7 @@ export default class Token extends Eventable {
   }
 
   set fullText(value) {
-    const configs = this.config;
+    const configs = this.configMap;
     if (configs) {
       let modifier: string = '';
       if (value.substr(0, 1) === '+') {

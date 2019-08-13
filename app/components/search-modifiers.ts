@@ -1,11 +1,13 @@
 import Component from '@ember/component';
+import { action, computed } from '@ember/object';
 import { classNames } from '@ember-decorators/component';
-import { action, computed, observes } from '@ember-decorators/object';
+import { observes } from '@ember-decorators/object';
 
 interface DisplayHint {
   category: string;
   index: number;
   label: string;
+  modifier: boolean;
   position: number;
   value: string;
 }
@@ -18,11 +20,31 @@ interface DisplayHintList {
 @classNames('search-modifiers')
 export default class SearchModifiers extends Component {
   focused: boolean = false;
-  currentIndex: number = -1;
   hintList: HintList[] = [];
 
   onSelect: ActionParam | null = null;
   onHighlightHint: ActionParam | null = null;
+
+  __currentIndex: number = -1;
+
+  get currentIndex(): number { return this.__currentIndex; }
+  set currentIndex(newValue: number) {
+    // Correct scroll
+    this.__currentIndex = newValue;
+    if (newValue === -1) { return; }
+    const listItem = this.element.querySelector(`div.search-modifier:nth-of-type(${newValue + 1})`) as HTMLElement;
+    const list = listItem.parentElement as HTMLElement;
+    const scroll = list.scrollTop;
+    const listHeight = list.scrollHeight;
+    const itemHeight = listItem.scrollHeight;
+    const top = listItem.offsetTop - scroll; // I think this is equal to jQuery's $(el).position().top
+    const bottom = top + itemHeight;
+    if (top < 0) {
+      list.scrollTo(list.scrollLeft, Math.max(scroll + top - 8));
+    } else if (listHeight < bottom) {
+      list.scrollTo(list.scrollLeft, scroll + top - listHeight + itemHeight);
+    }
+  }
 
   @computed('hintList.[]')
   get list(): DisplayHintList[] {
@@ -35,6 +57,7 @@ export default class SearchModifiers extends Component {
             category: section.section,
             index,
             label: listItem.label || '',
+            modifier: listItem.modifier || false,
             position: index,
             value: listItem.value
           };
@@ -55,23 +78,6 @@ export default class SearchModifiers extends Component {
     if (this.focused) {
       const keyboardNavigator = this.element.querySelector('.list-keyboard-navigator') as HTMLElement;
       if (keyboardNavigator) { keyboardNavigator.focus(); }
-    }
-  }
-
-  @observes('currentIndex')
-  correctScroll() {
-    if (this.currentIndex === -1) { return; }
-    const listItem = this.element.querySelector(`div.search-modifier:nth-of-type(${this.currentIndex + 1})`) as HTMLElement;
-    const list = listItem.parentElement as HTMLElement;
-    const scroll = list.scrollTop;
-    const listHeight = list.scrollHeight;
-    const itemHeight = listItem.scrollHeight;
-    const top = listItem.offsetTop - scroll; // I think this is equal to jQuery's $(el).position().top
-    const bottom = top + itemHeight;
-    if (top < 0) {
-      list.scrollTo(list.scrollLeft, Math.max(scroll + top - 8));
-    } else if (listHeight < bottom) {
-      list.scrollTo(list.scrollLeft, scroll + top - listHeight + itemHeight);
     }
   }
 

@@ -1,7 +1,8 @@
 import Component from '@ember/component';
 import { next } from '@ember/runloop';
+import { action, computed } from '@ember/object';
 import { attribute, classNames } from '@ember-decorators/component';
-import { action, computed, observes } from '@ember-decorators/object';
+import { observes } from '@ember-decorators/object';
 import KEY from 'search-with-modifiers/utils/keycodes';
 import { scrollIntoView, scrollToBottom, scrollToTop } from 'search-with-modifiers/utils/scroll-helpers';
 
@@ -12,7 +13,6 @@ export default class ListKeyboardNavigator extends Component {
   selectedItem: object | null = null;
   highlightFromSelection: boolean = false;
   selectImmediately: boolean = false;
-  focused: boolean = false;
   items: object[] = [];
   highlightedItemIndex: number = -1;
   highlightedBy: string | null = null;
@@ -23,6 +23,26 @@ export default class ListKeyboardNavigator extends Component {
   onHitTop: ActionParam | null = null;
   onChangedFocus: ActionParam | null = null;
   onItemHighlighted: ActionParam | null = null;
+
+  __focused: boolean = false;
+
+  get focused() { return this.__focused; }
+  set focused(newValue: boolean) {
+    this.__focused = newValue;
+    if (this.onChangedFocus) { this.onChangedFocus(newValue); }
+
+    if (!newValue) { return; }
+    // Safari will scroll to the top of the div and cancel any click events if
+    // we focus on the keyboard navigator when it or a child is already in focus
+    const rootEl = (this.element as HTMLElement);
+    if (rootEl === null) { return; }
+    const alreadyFocused = rootEl === document.activeElement || rootEl.contains(document.activeElement);
+    if (!alreadyFocused) {
+      rootEl.focus();
+      // Simulating a keypress is hard. Can we just call downPressed?
+      this.downPressed();
+    }
+  }
 
   @computed('selectImmediately')
   get highlightOnMouseOver(): boolean {
@@ -46,8 +66,10 @@ export default class ListKeyboardNavigator extends Component {
 
   @computed('selectedItem', 'items.[]')
   get selectedItemIndex(): number {
-    if (!this.selectedItem) { return -1; }
-    return this.items.indexOf(this.selectedItem);
+    let index = -1;
+    if (this.selectedItem) { index = this.items.indexOf(this.selectedItem); }
+    this.updateHighlightIndex(index, null, true);
+    return index;
   }
 
   private mouseOverHandler: ActionParam;
@@ -174,25 +196,6 @@ export default class ListKeyboardNavigator extends Component {
     this.select();
   }
 
-  @observes('focused')
-  acquireFocus() {
-    if (!this.focused) { return; }
-    // Safari will scroll to the top of the div and cancel any click events if
-    // we focus on the keyboard navigator when it or a child is already in focus
-    const rootEl = (this.element as HTMLElement);
-    const alreadyFocused = rootEl === document.activeElement || rootEl.contains(document.activeElement);
-    if (!alreadyFocused) {
-      rootEl.focus();
-      // Simulating a keypress is hard. Can we just call downPressed?
-      this.downPressed();
-    }
-  }
-
-  @observes('focused')
-  notifyFocus() {
-    if (this.onChangedFocus) { this.onChangedFocus(this.focused); }
-  }
-
   scrollToHighlightedItem() {
     if (this.highlightedBy === 'mouse') { return; }
     if (this.highlightedIndex < 0) { return; }
@@ -217,11 +220,6 @@ export default class ListKeyboardNavigator extends Component {
 
   resetHighlight() {
     this.updateHighlightIndex(-1);
-  }
-
-  @observes('selectedItemIndex')
-  highlightSelectedItem() {
-    this.updateHighlightIndex(this.selectedItemIndex, null, true);
   }
 
   private updateHighlightIndex(index: number, highlightedBy: string | null = null, ignoreSelectImmediately: boolean = false) {
