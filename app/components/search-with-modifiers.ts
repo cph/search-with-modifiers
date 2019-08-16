@@ -128,8 +128,9 @@ export default class SearchWithModifiers extends Component {
     }
 
     if (!this.query) {
-      const queryParams = new URLSearchParams(window.location.search);
-      this.set('query', queryParams.get('q') || '');
+      const queryMatch = window.location.search.match(/q=([^&]+)/);
+      const query = queryMatch ? decodeURIComponent(queryMatch[1]) : '';
+      this.set('query', query);
     }
   }
 
