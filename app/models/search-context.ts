@@ -1,6 +1,7 @@
 import { computed, set } from '@ember/object';
 
 interface RawModifier {
+  unlisted?: boolean;
   hint: string;
   modifier: string;
   title: string;
@@ -17,11 +18,14 @@ export default class SearchContext {
   @computed('modifiers.[]')
   public get config(): ConfigMap {
     let config: ConfigMap = {};
-    this.modifiers.forEach(({ modifier, hint, title, values }) => {
+    this.modifiers.forEach((rawModifier) => {
+      let { modifier, hint, title, values } = rawModifier;
+      let unlisted = !!rawModifier.unlisted;
       if (modifier !== '#') { modifier = `${modifier}:`; }
       config[modifier] = {
         content: values,
         defaultHint: hint,
+        unlisted,
         sectionTitle: title,
         type: 'list'
       };

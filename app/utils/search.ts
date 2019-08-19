@@ -65,11 +65,12 @@ export function getDefaultContent(configMap: ConfigMap, modifiersList: Modifier[
   return modifiers.concat(allList);
 }
 
-export function getAllModifiers(configMap: ConfigMap): Modifier[] {
+export function getAllModifiers(configMap: ConfigMap, onlyVisible: boolean=false): Modifier[] {
   let modifiers: Modifier[] = [];
   for (let key in configMap) {
     if (configMap.hasOwnProperty(key)) {
       const config = configMap[key];
+      if (onlyVisible && config.unlisted) { continue; }
       const section = config.type === 'date' ? 'time' : 'others';
       modifiers.push({
         label: config.defaultHint,
@@ -84,10 +85,9 @@ export function getAllModifiers(configMap: ConfigMap): Modifier[] {
 
 export function prepareConfig(configMap: ConfigMap): ConfigMap {
   configMap = deepClone(configMap);
-  const modifiers = getAllModifiers(configMap);
-  configMap['+'] = { type: 'modifier-list', content: modifiers };
+  configMap['+'] = { type: 'modifier-list', content: getAllModifiers(configMap, true) };
   configMap._default = {
-    content: getDefaultContent(configMap, modifiers),
+    content: getDefaultContent(configMap, getAllModifiers(configMap)),
     type: 'default'
   };
   return configMap;
