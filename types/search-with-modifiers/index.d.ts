@@ -24,6 +24,7 @@ declare global {
   interface SearchContextConfig {
     content: Hint[];
     defaultHint?: string;
+    unlisted?: boolean;
     sectionTitle?: string;
     type: string;
   }
