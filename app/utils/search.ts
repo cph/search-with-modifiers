@@ -58,11 +58,7 @@ export function getDefaultContent(configMap: ConfigMap, modifiersList: Modifier[
       }
     }
   }
-  const modifiers = modifiersList.map(function(item: Modifier) {
-    item.section = 'Narrow your Search';
-    return item;
-  });
-  return modifiers.concat(allList);
+  return modifiersList.concat(allList);
 }
 
 export function getAllModifiers(configMap: ConfigMap, onlyVisible: boolean=false): Modifier[] {
@@ -71,7 +67,7 @@ export function getAllModifiers(configMap: ConfigMap, onlyVisible: boolean=false
     if (configMap.hasOwnProperty(key)) {
       const config = configMap[key];
       if (onlyVisible && config.unlisted) { continue; }
-      const section = config.type === 'date' ? 'time' : 'others';
+      const section = config.type === 'date' ? 'time' : 'Narrow your Search';
       modifiers.push({
         label: config.defaultHint,
         modifier: true,
