@@ -1,5 +1,8 @@
 'use strict';
 
+// Production detection seems to be slightly
+// unreliable. Just comment out 'ie 11' when
+// developing to make it easier to trace errors.
 const browsers = [
   'last 1 Chrome versions',
   'last 1 Firefox versions',
