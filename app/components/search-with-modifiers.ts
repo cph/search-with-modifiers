@@ -127,19 +127,28 @@ export default class SearchWithModifiers extends Component {
       });
     }
 
-    if (!this.query) {
-      const queryMatch = window.location.search.match(/q=([^&]+)/);
-      const query = queryMatch ? decodeURIComponent(queryMatch[1]) : '';
-      this.set('query', query);
-    }
+    if (!this.query) { this.pullQueryFromLocation(); }
   }
 
   didInsertElement() {
     window.addEventListener('click', this.clickAwayHandler);
+    window.addEventListener('turbolinks:load', this.turbolinksLoadHandler);
   }
 
   willDestroyElement() {
     window.removeEventListener('click', this.clickAwayHandler);
+    window.removeEventListener('turbolinks:load', this.turbolinksLoadHandler);
+  }
+
+  pullQueryFromLocation() {
+    const queryMatch = window.location.search.match(/q=([^&]+)/);
+    const query = queryMatch ? decodeURIComponent(queryMatch[1]) : '';
+    this.setProperties({ query, cachedQuery: query });
+  }
+
+  @action
+  turbolinksLoadHandler() {
+    this.pullQueryFromLocation();
   }
 
   @action
