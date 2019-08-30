@@ -29,6 +29,7 @@ export default class SearchWithModifiers extends Component {
   forceHidingSearchHelps: boolean = false;
   forceShowingSearchHelps: boolean = false;
   contextPath: string = '';
+  placeholder: string = '';
   searchPath: string = '';
   button: string | null = null;
   buttonClasses: string = '';

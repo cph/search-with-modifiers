@@ -38,6 +38,7 @@ export default class SearchBox extends Component {
   cursorLocation: number = -1;
   maxLength: number = 250;
   tokenConfig: ConfigMap = {};
+  placeholder: string = '';
 
   onActiveTokenChanged: ActionParam | null = null;
   onSearchTriggered: ActionParam | null = null;
