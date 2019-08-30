@@ -150,6 +150,7 @@ export default class SearchWithModifiers extends Component {
   @action
   turbolinksLoadHandler() {
     this.pullQueryFromLocation();
+    next(this, ()=> { this.hideSearchHelps(); });
   }
 
   @action
