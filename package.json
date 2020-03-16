@@ -66,6 +66,8 @@
     "lodash.template": "^4.5.0",
     "mixin-deep": "^2.0.1",
     "set-value": "^3.0.1",
-    "union-value": "^2.0.0"
+    "union-value": "^2.0.0",
+    "acorn": "^6.4.1",
+    "minimist": "^1.2.2"
   }
 }
