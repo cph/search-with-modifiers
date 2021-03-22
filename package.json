@@ -62,12 +62,13 @@
     "node": "8.* || >= 10.*"
   },
   "resolutions": {
+    "acorn": "^6.4.1",
     "clean-css": "^4.1.11",
     "lodash.template": "^4.5.0",
+    "minimist": "^1.2.2",
     "mixin-deep": "^2.0.1",
+    "printf": "^0.6.1",
     "set-value": "^3.0.1",
-    "union-value": "^2.0.0",
-    "acorn": "^6.4.1",
-    "minimist": "^1.2.2"
+    "union-value": "^2.0.0"
   }
 }
