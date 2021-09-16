@@ -63,6 +63,7 @@
   },
   "resolutions": {
     "acorn": "^6.4.1",
+    "ansi-html": "mahdyar/ansi-html-community#v0.0.8",
     "clean-css": "^4.1.11",
     "lodash.template": "^4.5.0",
     "minimist": "^1.2.2",
