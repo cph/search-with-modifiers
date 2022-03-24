@@ -69,7 +69,7 @@
     "follow-redirects": "^1.14.7",
     "lodash.template": "^4.5.0",
     "markdown-it": "^12.3.2",
-    "minimist": "^1.2.2",
+    "minimist": "^1.2.6",
     "mixin-deep": "^2.0.1",
     "printf": "^0.6.1",
     "set-value": "^4.0.1",
