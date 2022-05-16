@@ -65,6 +65,7 @@
     "acorn": "^6.4.1",
     "ansi-html": "mahdyar/ansi-html-community#v0.0.8",
     "ansi-regex": "^5.0.1",
+    "async": "^2.6.4",
     "clean-css": "^4.1.11",
     "follow-redirects": "^1.14.7",
     "lodash.template": "^4.5.0",
