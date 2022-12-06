@@ -73,6 +73,7 @@
     "minimist": "^1.2.6",
     "mixin-deep": "^2.0.1",
     "printf": "^0.6.1",
+    "qs": "^6.10.3",
     "set-value": "^4.0.1",
     "union-value": "^2.0.0",
     "xmldom": "github:xmldom/xmldom#0.7.0",
