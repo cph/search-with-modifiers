@@ -40,9 +40,9 @@
     "ember-cli-rails-addon": "kobsy/ember-cli-rails-addon#optional-csrf",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-template-lint": "^2.0.0",
+    "ember-cli-terser": "^4.0.1",
     "ember-cli-typescript": "^2.0.2",
     "ember-cli-typescript-blueprints": "^2.0.0",
-    "ember-cli-terser": "^4.0.1",
     "ember-decorators": "^6.0.0",
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "^6.7.0",
@@ -78,6 +78,8 @@
     "union-value": "^2.0.0",
     "xmldom": "github:xmldom/xmldom#0.7.0",
     "xmlhttprequest-ssl": "^1.6.2",
-    "node-fetch": "^3.2.10"
-  }
+    "node-fetch": "^3.2.10",
+    "json5": "^2.2.3"
+  },
+  "dependencies": {}
 }
