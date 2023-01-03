@@ -45,7 +45,7 @@
     "ember-cli-terser": "^4.0.1",
     "ember-decorators": "^6.0.0",
     "ember-export-application-global": "^2.0.0",
-    "ember-fetch": "^6.7.0",
+    "ember-fetch": "^8.0.5",
     "ember-islands": "^1.5.1",
     "ember-load-initializers": "^2.0.0",
     "ember-maybe-import-regenerator": "^0.1.6",
@@ -78,6 +78,7 @@
     "union-value": "^2.0.0",
     "xmldom": "github:xmldom/xmldom#0.7.0",
     "xmlhttprequest-ssl": "^1.6.2",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "^3.2.10",
+    "json5": "^2.2.3"
   }
 }
